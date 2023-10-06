@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const noteList = require('./db/db.json');
 
 const PORT = 3001;
 
@@ -18,7 +19,11 @@ app.get('/notes', (req, res) =>
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
-app.post('/notes', (req, res) => {
+app.get('/api/notes', (req, res) =>
+    res.json(noteList)
+    );
+
+app.post('/api/notes', (req, res) => {
     console.info(`${req.method} request received to add a note`);
 
     const { title, text } = req.body;
@@ -29,11 +34,28 @@ app.post('/notes', (req, res) => {
             text,
         };
 
-        const noteString = JSON.stringify(newNote);
+        fs.readFile(`./db/db.json`, (err,data) => {
+            if (err) throw err;
+            const notes = JSON.parse(data);
+            notes.push(newNote);
 
-        
+            fs.writeFile(`./db/db.json`, JSON.stringify(notes, null, 4), (err) =>
+            err
+            ? console.error(err)
+            : console.log(`Note added!`)) 
+        })
+        const response = {
+            status: 'success',
+            body: newNote,
+        };
+
+        console.log(response);
+    } else {
+        res.status(500).json('Error in adding note')
     }
-})
+});
+
+
 
 app.listen(PORT, () =>
     console.log(`App listening at http://localhost:${PORT}`)
