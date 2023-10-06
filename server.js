@@ -27,7 +27,7 @@ app.get('/api/notes', (req, res) => {
 });
 
 app.post('/api/notes', (req, res) => {
-    console.info(`${req.method} request received to add a note`);
+    console.info(`${req.method} request received to add note`);
 
     const { title, text } = req.body;
 
@@ -36,8 +36,8 @@ app.post('/api/notes', (req, res) => {
             title,
             text,
             id: Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1),
+                .toString(16)
+                .substring(1),
         };
 
         fs.readFile(`./db/db.json`, (err, data) => {
@@ -63,12 +63,27 @@ app.post('/api/notes', (req, res) => {
 app.get('api/notes/:id', (req, res) => {
     const requestNote = req.params.id.toLowerCase();
 
-    for(let i = 0; i < noteList.length; i++) {
+    for (let i = 0; i < noteList.length; i++) {
         if (requestNote === noteList[i].term.toLowerCase()) {
             return res.json(noteList[i]);
         }
     }
-})
+});
+
+app.delete('/api/notes/:id', (req, res) => {
+    console.info(`${req.method} request received to delete note`);
+
+    fs.readFile(`./db/db.json`, (err, data) => {
+        if (err) throw err;
+        const deleteNotes = JSON.parse(data);
+        const updatedNotes = deleteNotes.filter(note => note.id !== req.params.id)
+
+        fs.writeFile(`./db/db.json`, JSON.stringify(updatedNotes, null, 4), (err) =>
+            err ? console.error(err) : console.log(`Note deleted!`))
+        res.json(updatedNotes)
+    })
+    
+});
 
 app.listen(PORT, () =>
     console.log(`App listening at http://localhost:${PORT}`)
