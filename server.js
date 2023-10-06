@@ -35,6 +35,9 @@ app.post('/api/notes', (req, res) => {
         const newNote = {
             title,
             text,
+            id: Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1),
         };
 
         fs.readFile(`./db/db.json`, (err, data) => {
@@ -44,7 +47,7 @@ app.post('/api/notes', (req, res) => {
 
             fs.writeFile(`./db/db.json`, JSON.stringify(notes, null, 4), (err) =>
                 err ? console.error(err) : console.log(`Note added!`))
-            res.json(newNote)
+            res.json(notes)
         })
         const response = {
             status: 'success',
@@ -56,6 +59,7 @@ app.post('/api/notes', (req, res) => {
         res.status(500).json('Error in adding note')
     }
 });
+
 
 app.listen(PORT, () =>
     console.log(`App listening at http://localhost:${PORT}`)
