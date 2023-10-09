@@ -1,9 +1,5 @@
 [
     {
-        "title": "Test Title",
-        "text": "Test text"
-    },
-    {
         "title": "Dinner",
         "text": "Make dinner",
         "id": "7337"
