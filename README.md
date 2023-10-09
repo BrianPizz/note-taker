@@ -23,6 +23,7 @@ Enter a new note in the title and text then either save or clear the note
 
 [Deployment Link]()
 
+![Screenshot 2023-10-09 at 10 26 23 AM (2)](https://github.com/BrianPizz/note-taker/assets/138056153/b092670c-cc76-40b8-938e-c2115096032d)
 
 
 
