@@ -42,4 +42,3 @@ Add and delete notes
 
 For any further questions contact:  
 [GitHub](https://github.com/BrianPizz)  
-[Email](mailto:bpizzimentijr@outlook.com)
